@@ -77,6 +77,13 @@ build CMakeFiles/chess2.dir/src/Piece.cpp.o: CXX_COMPILER__chess2_Debug /Users/e
   OBJECT_DIR = CMakeFiles/chess2.dir
   OBJECT_FILE_DIR = CMakeFiles/chess2.dir/src
 
+build CMakeFiles/chess2.dir/src/PieceMovement.cpp.o: CXX_COMPILER__chess2_Debug /Users/e0665714/code/personal/chess2/src/PieceMovement.cpp || cmake_object_order_depends_target_chess2
+  DEP_FILE = CMakeFiles/chess2.dir/src/PieceMovement.cpp.o.d
+  FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.6 -fcolor-diagnostics -std=gnu++17
+  INCLUDES = -I/Users/e0665714/code/personal/chess2/include -isystem /opt/homebrew/include
+  OBJECT_DIR = CMakeFiles/chess2.dir
+  OBJECT_FILE_DIR = CMakeFiles/chess2.dir/src
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target chess2
@@ -85,7 +92,7 @@ build CMakeFiles/chess2.dir/src/Piece.cpp.o: CXX_COMPILER__chess2_Debug /Users/e
 #############################################
 # Link the executable chess2
 
-build chess2: CXX_EXECUTABLE_LINKER__chess2_Debug CMakeFiles/chess2.dir/src/main.cpp.o CMakeFiles/chess2.dir/src/Board.cpp.o CMakeFiles/chess2.dir/src/Chess.cpp.o CMakeFiles/chess2.dir/src/Piece.cpp.o | /opt/homebrew/lib/libsfml-graphics.2.5.1.dylib /opt/homebrew/lib/libsfml-network.2.5.1.dylib /opt/homebrew/lib/libsfml-audio.2.5.1.dylib /opt/homebrew/lib/libsfml-window.2.5.1.dylib /opt/homebrew/lib/libsfml-system.2.5.1.dylib
+build chess2: CXX_EXECUTABLE_LINKER__chess2_Debug CMakeFiles/chess2.dir/src/main.cpp.o CMakeFiles/chess2.dir/src/Board.cpp.o CMakeFiles/chess2.dir/src/Chess.cpp.o CMakeFiles/chess2.dir/src/Piece.cpp.o CMakeFiles/chess2.dir/src/PieceMovement.cpp.o | /opt/homebrew/lib/libsfml-graphics.2.5.1.dylib /opt/homebrew/lib/libsfml-network.2.5.1.dylib /opt/homebrew/lib/libsfml-audio.2.5.1.dylib /opt/homebrew/lib/libsfml-window.2.5.1.dylib /opt/homebrew/lib/libsfml-system.2.5.1.dylib
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.6
   LINK_LIBRARIES = -Wl,-rpath,/opt/homebrew/lib  /opt/homebrew/lib/libsfml-graphics.2.5.1.dylib  /opt/homebrew/lib/libsfml-network.2.5.1.dylib  /opt/homebrew/lib/libsfml-audio.2.5.1.dylib  /opt/homebrew/lib/libsfml-window.2.5.1.dylib  /opt/homebrew/lib/libsfml-system.2.5.1.dylib
   OBJECT_DIR = CMakeFiles/chess2.dir

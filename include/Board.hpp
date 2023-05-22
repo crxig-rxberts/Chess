@@ -11,10 +11,15 @@ namespace chess {
         void handleMouseButtonEvent(const sf::Event::MouseButtonEvent &event, bool isPressed);
         void handleMouseMoveEvent(const sf::Event::MouseMoveEvent &event);
 
+        int getPieceIndexAtTile(int col, int row);
+        int getPieceArrayIndexAtTile(int col, int row);
 
+        // event var
+        bool pieceHidden;
     private:
         const float squareSize = 1600.0f / 8;
 
+        std::map<sf::Color, sf::Vector2i> kingPositions; // map to store the king positions by color
 
         sf::Texture boardTexture;
         sf::Sprite boardSprite;
@@ -41,7 +46,5 @@ namespace chess {
         void findLegalMoves(int pieceIndex);
         void releasePiece(float x, float y);
         void snapPieceToTileCenter(int col, int row);
-        int getPieceIndexAtTile(int col, int row);
-        std::vector<sf::Vector2i> findPossibleMovesForPieceType(const Piece &piece);
     };
 }

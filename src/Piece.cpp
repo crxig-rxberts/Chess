@@ -1,13 +1,10 @@
 #include "../include/Piece.hpp"
+#include "Board.hpp"
 
 namespace chess {
     Piece::Piece(const sf::Texture &texture, const sf::Vector2f &position, int pieceIndex)
-            : sprite(texture), pieceIndex(pieceIndex) {
+            : sprite(texture), pieceIndex(pieceIndex), isVisible(true) {
         setPosition(position);
-    }
-
-    Piece::Piece(const sf::Texture &texture)
-            : sprite(texture) {
     }
 
     void Piece::setPosition(const sf::Vector2f &position, float scaleFactor) {
@@ -19,12 +16,18 @@ namespace chess {
         return sprite.getPosition();
     }
 
+    void Piece::hide() {
+        isVisible = false;
+    }
+
     sf::FloatRect Piece::getGlobalBounds() const {
         return sprite.getGlobalBounds();
     }
 
     void Piece::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-        target.draw(sprite, states);
+        if (isVisible) {
+            target.draw(sprite, states);
+        }
     }
 
     const sf::Vector2f &Piece::getScale() const {

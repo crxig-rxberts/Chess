@@ -7,7 +7,7 @@ namespace chess {
 
     int Chess::run() {
         sf::RenderWindow window(sf::VideoMode(1600, 1600), "Chess Game");
-        window.setFramerateLimit(12);
+        window.setFramerateLimit(60);
 
         Board board(window.getSize().x);
 
@@ -40,6 +40,10 @@ namespace chess {
 
                 window.clear();
                 window.draw(board);
+                if (board.pieceHidden) {
+                    window.display();
+                    board.pieceHidden = false;
+                }
                 window.display();
             }
 

@@ -6,15 +6,15 @@ namespace chess {
     class Piece : public sf::Drawable {
     public:
         Piece(const sf::Texture &texture, const sf::Vector2f &position, int pieceIndex);
-        explicit Piece(const sf::Texture &texture);
-
         void setPosition(const sf::Vector2f &position, float scaleFactor = 1.0f);
         sf::Vector2f getPosition() const;
+        void hide();
         sf::FloatRect getGlobalBounds() const;
         const sf::Vector2f &getScale() const;
         void setScale(const sf::Vector2f &scale);
         int getPieceIndex() const;
 
+        bool isVisible;
 
         bool isPawn() const {
             int index = abs(pieceIndex);
