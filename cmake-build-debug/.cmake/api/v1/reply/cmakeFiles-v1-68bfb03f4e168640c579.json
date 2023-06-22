@@ -170,8 +170,8 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "/Users/e0665714/code/personal/chess2/cmake-build-debug",
-		"source" : "/Users/e0665714/code/personal/chess2"
+		"build" : "/Users/e0665714/code/personal/chess/cmake-build-debug",
+		"source" : "/Users/e0665714/code/personal/chess"
 	},
 	"version" : 
 	{

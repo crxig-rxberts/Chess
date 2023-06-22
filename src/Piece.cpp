@@ -1,5 +1,4 @@
 #include "../include/Piece.hpp"
-#include "Board.hpp"
 
 namespace chess {
     Piece::Piece(const sf::Texture &texture, const sf::Vector2f &position, int pieceIndex)

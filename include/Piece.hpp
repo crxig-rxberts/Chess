@@ -3,9 +3,13 @@
 #include <SFML/Graphics.hpp>
 
 namespace chess {
+
     class Piece : public sf::Drawable {
+
     public:
+
         Piece(const sf::Texture &texture, const sf::Vector2f &position, int pieceIndex);
+
         void setPosition(const sf::Vector2f &position, float scaleFactor = 1.0f);
         sf::Vector2f getPosition() const;
         void hide();
