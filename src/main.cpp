@@ -1,61 +1,34 @@
-
 #include "Board.hpp"
 #include "BoardEvent.hpp"
 
+#include <unordered_map>
+
+const unsigned int WINDOW_SIZE = 1600;
+const unsigned int FRAME_RATE = 60;
+
 int main() {
+    sf::RenderWindow window(sf::VideoMode(WINDOW_SIZE, WINDOW_SIZE), "Chess");
+    window.setFramerateLimit(FRAME_RATE);
 
-//    chess::Board board2(1200);
-//    board2.pieceLayout = {
-//            {-4, -2, -3, -5, -6, 0, -2, -4},
-//            {-1, -1, -1, -1, 0, -1, -1, -1},
-//            {0, 0, 0, 0, 0, 0, 0, 0},
-//            {0, 0, 0, 0, 0, 0, 0, 0},
-//            {0, -3, 0, 0, 0, 0, 0, 0},
-//            {0, 0, 0, 0, 0, 0, 0, 0},
-//            {1, 1, 1, 0, 1, 1, 1, 1},
-//            {4, 2, 3, 5, 6, 3, 2, 4}
-//    };
+    Board board(window.getSize().x);
 
-    sf::RenderWindow window(sf::VideoMode(1600, 1600), "Chess");
-    window.setFramerateLimit(60);
-
-    chess::Board board(window.getSize().x);
+    std::unordered_map<sf::Event::EventType, std::function<void(sf::Event&)>> eventHandlers {
+            { sf::Event::Closed, [&window](sf::Event& event) {window.close(); } },
+            { sf::Event::MouseMoved, [&board](sf::Event& event) { BoardEvent::handleMouseMoveEvent(board, event.mouseMove); } },
+            { sf::Event::MouseButtonPressed, [&board](sf::Event& event) { BoardEvent::handleMouseButtonEvent(board, event.mouseButton, true); } },
+            { sf::Event::MouseButtonReleased, [&board](sf::Event& event) { BoardEvent::handleMouseButtonEvent(board, event.mouseButton, false); } },
+    };
 
     while (window.isOpen()) {
         sf::Event event{};
         while (window.pollEvent(event)) {
-            switch (event.type) {
-
-                case sf::Event::Closed:
-                    window.close();
-                    break;
-
-                case sf::Event::MouseButtonPressed:
-                    chess::BoardEvent::handleMouseButtonEvent(board, event.mouseButton, true);
-                    break;
-
-                case sf::Event::MouseButtonReleased:
-                    chess::BoardEvent::handleMouseButtonEvent(board, event.mouseButton, false);
-                    break;
-
-                case sf::Event::MouseMoved:
-                    chess::BoardEvent::handleMouseMoveEvent(board, event.mouseMove);
-                    break;
-
-                default:
-                    break;
+            if(eventHandlers.count(event.type) > 0) {
+                eventHandlers[event.type](event);
             }
         }
 
         window.clear();
         window.draw(board);
-
-        // check if a piece has been taken, rerender if so
-        if (chess::BoardEvent::pieceHidden) {
-            window.display();
-            chess::BoardEvent::pieceHidden = false;
-        }
         window.display();
-
     }
 }

@@ -1,61 +1,30 @@
 #pragma once
-
 #include <SFML/Graphics.hpp>
 
-namespace chess {
+class Piece : public sf::Drawable {
+public:
+    Piece(const sf::Texture &texture, const sf::Vector2f &position, int pieceIndex);
 
-    class Piece : public sf::Drawable {
+    void setPosition(const sf::Vector2f &position, float scaleFactor = 1.0f);
+    sf::Vector2f getPosition() const;
+    void hide();
+    sf::FloatRect getGlobalBounds() const;
+    const sf::Vector2f &getScale() const;
+    void setScale(const sf::Vector2f &scale);
+    int getPieceIndex() const;
 
-    public:
+    bool isPawn() const { return abs(pieceIndex) == 1; }
+    bool isKnight() const { return abs(pieceIndex) == 2; }
+    bool isBishop() const { return abs(pieceIndex) == 3; }
+    bool isRook() const { return abs(pieceIndex) == 4; }
+    bool isQueen() const { return abs(pieceIndex) == 5; }
+    bool isKing() const { return abs(pieceIndex) == 6; }
 
-        Piece(const sf::Texture &texture, const sf::Vector2f &position, int pieceIndex);
+    bool isVisible;
 
-        void setPosition(const sf::Vector2f &position, float scaleFactor = 1.0f);
-        sf::Vector2f getPosition() const;
-        void hide();
-        sf::FloatRect getGlobalBounds() const;
-        const sf::Vector2f &getScale() const;
-        void setScale(const sf::Vector2f &scale);
-        int getPieceIndex() const;
+private:
+    sf::Sprite sprite;
+    int pieceIndex;
 
-        bool isVisible;
-
-        bool isPawn() const {
-            int index = abs(pieceIndex);
-            return index == 1;
-        }
-
-        bool isKnight() const {
-            int index = abs(pieceIndex);
-            return index == 2;
-        }
-
-        bool isBishop() const {
-            int index = abs(pieceIndex);
-            return index == 3;
-        }
-
-        bool isRook() const {
-            int index = abs(pieceIndex);
-            return index == 4;
-        }
-
-        bool isQueen() const {
-            int index = abs(pieceIndex);
-            return index == 5;
-        }
-
-        bool isKing() const {
-            int index = abs(pieceIndex);
-            return index == 6;
-        }
-
-
-    private:
-        sf::Sprite sprite;
-        int pieceIndex;
-
-
-        void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-    };
-}
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+};

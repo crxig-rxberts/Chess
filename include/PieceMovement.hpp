@@ -5,19 +5,20 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
-namespace chess {
-    class PieceMovement {
-    public:
-        static std::vector<sf::Vector2i> findPossibleMovesForPieceType(const Piece &piece, Board &board);
-        constexpr static const float squareSize = 1600.0f / 8;
+class PieceMovement {
+public:
+    constexpr static const float squareSize = 1600.0f / 8;
+    constexpr static const int boardSize = 8;
 
-    private:
-        static std::vector<sf::Vector2i> findLegalMovesForPawn(const Piece &piece, int currentCol, int currentRow, const Board& board);
-        static std::vector<sf::Vector2i> findLegalMovesForKnight(const Piece &piece, int currentCol, int currentRow, const Board& board);
-        static std::vector<sf::Vector2i> findLegalMovesForDirectionalPiece(const Piece& piece, int currentCol, int currentRow, const Board& board, const std::vector<sf::Vector2i>& directions);
-        static std::vector<sf::Vector2i> findLegalMovesForBishop(const Piece &piece, int currentCol, int currentRow, const Board& board);
-        static std::vector<sf::Vector2i> findLegalMovesForRook(const Piece &piece, int currentCol, int currentRow, const Board& board);
-        static std::vector<sf::Vector2i> findLegalMovesForQueen(const Piece &piece, int currentCol, int currentRow, const Board& board);
-        static std::vector<sf::Vector2i> findLegalMovesForKing(const Piece &piece, int currentCol, int currentRow, const Board& board);
-    };
-}
+    static std::vector<sf::Vector2i> calculateMovesForPiece(const Piece &piece, Board &board);
+
+private:
+    static std::vector<sf::Vector2i> calculatePawnMoves(const Piece &piece, int currentCol, int currentRow, const Board &board);
+    static std::vector<sf::Vector2i> calculateKnightMoves(const Piece &piece, int currentCol, int currentRow, const Board &board);
+    static std::vector<sf::Vector2i> calculateDirectionalPieceMoves(const Piece& piece, int currentCol, int currentRow, const Board& board, const std::vector<sf::Vector2i>& directions);
+    static std::vector<sf::Vector2i> calculateKingMoves(const Piece &piece, int currentCol, int currentRow, const Board &board);
+
+    static bool isWithinBoard(int col, int row);
+    static bool isOpponentsPiece(const Piece& piece, int targetPieceIndex);
+    static bool isEmptyOrOpponentsPiece(const Piece& piece, int targetPieceIndex);
+};
