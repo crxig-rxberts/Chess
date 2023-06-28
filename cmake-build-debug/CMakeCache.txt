@@ -225,6 +225,15 @@ chess2_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 chess2_SOURCE_DIR:STATIC=/Users/e0665714/code/personal/chess
 
+//Value Computed by CMake
+chess_BINARY_DIR:STATIC=/Users/e0665714/code/personal/chess/cmake-build-debug
+
+//Value Computed by CMake
+chess_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+chess_SOURCE_DIR:STATIC=/Users/e0665714/code/personal/chess
+
 
 ########################
 # INTERNAL cache entries
