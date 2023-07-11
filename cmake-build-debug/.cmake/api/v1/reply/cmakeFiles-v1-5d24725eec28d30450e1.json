@@ -165,6 +165,22 @@
 		{
 			"isExternal" : true,
 			"path" : "/opt/homebrew/lib/cmake/SFML/SFMLConfigDependencies.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/opt/homebrew/lib/cmake/Catch2/Catch2ConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/opt/homebrew/lib/cmake/Catch2/Catch2Config.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/opt/homebrew/lib/cmake/Catch2/Catch2Targets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/opt/homebrew/lib/cmake/Catch2/Catch2Targets-release.cmake"
 		}
 	],
 	"kind" : "cmakeFiles",
