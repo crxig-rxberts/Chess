@@ -1,5 +1,7 @@
 #include "BoardEvent.hpp"
 #include "PieceMovement.hpp"
+#include <iostream>
+
 
 
 namespace {
@@ -38,7 +40,7 @@ void BoardEvent::handleMouseMoveEvent(Board& board, const sf::Event::MouseMoveEv
 void BoardEvent::findClickedPiece(Board& board, float x, float y) {
     for (size_t i = 0; i < board.pieces.size(); ++i) {
         auto &piece = board.pieces[i];
-        if (piece.getGlobalBounds().contains(x, y)) {
+        if (piece.getGlobalBounds().contains(x, y) && piece.getPieceIndex() * board.currentPlayerTurn > 0) {
             draggedPieceArrayIndex = i;
             mouseOffset = piece.getPosition() - sf::Vector2f(x, y);
             originalScale = piece.getScale(); // Store the original scale
@@ -85,6 +87,7 @@ void BoardEvent::handleLegalMove(Board& board, int col, int row) {
         updatePieceLayout(board, col, row, tempPiece);
         removeTargetPiece(board, col, row);
         snapPieceToTileCenter(board, col, row);
+        board.currentPlayerTurn *= -1;
     }
 }
 

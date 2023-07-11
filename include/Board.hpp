@@ -11,9 +11,12 @@ public:
     const float tileSize = 1600.0f / 8;
     std::vector<std::vector<int>> pieceLayout;
     std::vector<Piece> pieces;
+    int currentPlayerTurn = 1;
+
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 private:
-    const std::string IMAGE_DIRECTORY = "../assets/img/";
+    const std::string IMAGE_DIRECTORY = "../src/assets/img/";
     const std::vector<std::string> PIECE_NAMES = { "pawn", "knight", "bishop", "rook", "queen", "king" };
     const std::vector<std::string> COLORS = { "white", "black" };
 
@@ -21,8 +24,7 @@ private:
     sf::Sprite boardSprite;
     std::vector<sf::Texture> pieceTextures;
 
-    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-    void loadTexture(sf::Texture& texture, const std::string& filename);
+    static void loadTexture(sf::Texture& texture, const std::string& filename);
     void loadPieceTextures();
     void createPieces();
 };
