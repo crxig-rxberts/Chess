@@ -233,12 +233,12 @@ isMoveSelfChecking(), and if this return true we follow the revert move path, el
 [here](https://github.com/crxig-rxberts/Chess/blob/e8740d353437257dc00ef127851811d1b92c857f/src/main/game/BoardEvent.cpp#L59).
 
 Another great implementation is within the main game loop [here](https://github.com/crxig-rxberts/Chess/blob/e8740d353437257dc00ef127851811d1b92c857f/src/main/main.cpp#L29), 
-this logic takes the handle of events out of the main game loop and into the unordered maps at the top of the file, this allows for a cleaner game loop
+this logic takes the handling of events out of the main game loop and into the unordered maps at the top of the file, this allows for a cleaner game loop
 and the ability to manage and add new events with relative ease when it comes to changes within main.cpp. There are however a couple of flaws with this 
-file that I will mention in the reflective review section. 
+file like the excessive nesting of while, if, while. This will be refactored in a later release.
 
 I also think the project file structure as a whole is well done, the structure can be seen in section [1b](https://github.com/crxig-rxberts/Chess#project-structure). 
-The project is split in a typical way seen in c++ projects, with all the headers stored in an include directory and then having well organised file structure for the 
+The project is split in a typical way seen in c++ projects, with all the headers stored in an include directory and then having a well organised file structure for the 
 main game files. This will be further improved as I expand the project, for example I will be adding more helper classes, so I will undoubtedly split the model 
 and controller sections like so: 
 - 📂 main
@@ -270,9 +270,10 @@ This would make the comments in the code redundant, something which I have learn
 
 ### 3e. i. Reflective review; Improvements
 
-The Boards current game state is reflected in this [pieceLayout](https://github.com/crxig-rxberts/Chess/blob/d66054c761d02de381dba955494ec0e904fb86b8/src/main/game/Board.cpp#L33) vector, but we actually store a pieces position and pieces type
-within itself (piece object). Due to the fact we have all piece positions, the board size and thus the tile size, we do not need this pieceLayout object to reflect the board. The algorithms
-for this would be vastly different to my implementations and my code is heavily dependent on this pieceLayout vector, so I have not yet made this improvement. 
+The Boards current game state is reflected in this [pieceLayout](https://github.com/crxig-rxberts/Chess/blob/d66054c761d02de381dba955494ec0e904fb86b8/src/main/game/Board.cpp#L33) vector, 
+but we actually store a pieces position and pieces type within itself (piece object). Due to the fact we have all piece positions, the board size and thus the tile size, we do not need 
+this pieceLayout object to reflect the board. The algorithms for this would be vastly different to my implementations and my code is heavily dependent on this pieceLayout vector, 
+so I have not yet made this improvement. 
 
 As seen in the [pieceLayout](https://github.com/crxig-rxberts/Chess/blob/d66054c761d02de381dba955494ec0e904fb86b8/src/main/game/Board.cpp#L33) vector pieces are reflected by 
 a pieceIndex, this pieceIndex is used throughout my code for all different reasons, but this could have been implemented as an enumerated type with the piece names, this refactor
