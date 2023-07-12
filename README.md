@@ -52,7 +52,7 @@ Board and Menu, which are drawable objects structured on initialisation by their
 Controller component, and these classes will modify attributes within the Model component to reflect the current game state.
 
 My plan was to initially create the main game loop, and then to branch out from there, initialising the Board on start up 
-was the first task, rendering this with its piece on screen. Then adding various controller components from there to implement the chess rules.
+was the first task, rendering this with the pieces on screen. Then adding various controller components from there to implement the chess rules.
 I used Jira to track these changes and keep tasks modular, which is shown in section 1d. 
 
 I would often revisit these changes, straying from my Jira tasks to refactor code, this although not best working practice 
