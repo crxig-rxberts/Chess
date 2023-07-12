@@ -1,16 +1,12 @@
 #include "BoardEvent.hpp"
 #include "PieceMovement.hpp"
-#include <iostream>
 
+int BoardEvent::draggedPieceArrayIndex = -1;
+sf::Vector2f BoardEvent::originalPos;
+sf::Vector2f BoardEvent::mouseOffset;
+sf::Vector2f BoardEvent::originalScale;
+std::vector<sf::Vector2i> BoardEvent::possibleMoves;
 
-
-namespace {
-    int draggedPieceArrayIndex = -1;
-    sf::Vector2f originalPos;
-    sf::Vector2f mouseOffset;
-    sf::Vector2f originalScale;
-    std::vector<sf::Vector2i> possibleMoves;
-}
 void BoardEvent::handleMouseButtonEvent(Board& board, const sf::Event::MouseButtonEvent &event, bool isPressed) {
     float x = event.x;
     float y = event.y;
@@ -39,7 +35,7 @@ void BoardEvent::handleMouseMoveEvent(Board& board, const sf::Event::MouseMoveEv
 
 void BoardEvent::findClickedPiece(Board& board, float x, float y) {
     for (size_t i = 0; i < board.pieces.size(); ++i) {
-        auto &piece = board.pieces[i];
+        auto const &piece = board.pieces[i];
         if (piece.getGlobalBounds().contains(x, y) && piece.getPieceIndex() * board.currentPlayerTurn > 0) {
             draggedPieceArrayIndex = i;
             mouseOffset = piece.getPosition() - sf::Vector2f(x, y);
@@ -50,15 +46,15 @@ void BoardEvent::findClickedPiece(Board& board, float x, float y) {
 }
 
 void BoardEvent::findLegalMoves(Board& board, int pieceIndex) {
-    auto& piece = board.pieces[pieceIndex];
+    auto const& piece = board.pieces[pieceIndex];
     possibleMoves = PieceMovement::calculateMovesForPiece(piece, board);
 }
 
 
 void BoardEvent::releasePiece(Board& board, float x, float y) {
     if (draggedPieceArrayIndex != -1) {
-        int col = static_cast<int>((x + mouseOffset.x) / board.tileSize);
-        int row = static_cast<int>((y + mouseOffset.y) / board.tileSize);
+        auto col = static_cast<int>((x + mouseOffset.x) / board.tileSize);
+        auto row = static_cast<int>((y + mouseOffset.y) / board.tileSize);
 
         if (isPossibleMove(col, row)) {
             handleLegalMove(board, col, row);
@@ -92,8 +88,8 @@ void BoardEvent::handleLegalMove(Board& board, int col, int row) {
 }
 
 void BoardEvent::updatePieceLayout(Board& board, int col, int row, const Piece& piece) {
-    int oldCol = static_cast<int>(originalPos.x);
-    int oldRow = static_cast<int>(originalPos.y);
+    auto oldCol = static_cast<int>(originalPos.x);
+    auto oldRow = static_cast<int>(originalPos.y);
     board.pieceLayout[oldRow][oldCol] = 0;
     board.pieceLayout[row][col] = piece.getPieceIndex();
 }
@@ -110,8 +106,8 @@ void BoardEvent::removeTargetPiece(Board& board, int col, int row) {
 }
 
 void BoardEvent::revertMove(Board& board) {
-    int oldCol = static_cast<int>(originalPos.x);
-    int oldRow = static_cast<int>(originalPos.y);
+    auto oldCol = static_cast<int>(originalPos.x);
+    auto oldRow = static_cast<int>(originalPos.y);
     snapPieceToTileCenter(board, oldCol, oldRow);
 }
 
@@ -144,8 +140,8 @@ int BoardEvent::getPieceIndexAtTile(Board board, int col, int row) {
 
         const auto &piece = board.pieces[i];
         sf::Vector2f position = piece.getPosition();
-        int pieceCol = static_cast<int>(position.x / board.tileSize);
-        int pieceRow = static_cast<int>(position.y / board.tileSize);
+        auto pieceCol = static_cast<int>(position.x / board.tileSize);
+        auto pieceRow = static_cast<int>(position.y / board.tileSize);
 
         if (pieceCol == col && pieceRow == row) {
             return piece.getPieceIndex();
@@ -163,8 +159,8 @@ int BoardEvent::getTargetPieceArrayIndexAtTile(Board& board, int col, int row) {
 
         const auto &piece = board.pieces[i];
         sf::Vector2f position = piece.getPosition();
-        int pieceCol = static_cast<int>(position.x / board.tileSize);
-        int pieceRow = static_cast<int>(position.y / board.tileSize);
+        auto pieceCol = static_cast<int>(position.x / board.tileSize);
+        auto pieceRow = static_cast<int>(position.y / board.tileSize);
 
         if (pieceCol == col && pieceRow == row) {
             return i;

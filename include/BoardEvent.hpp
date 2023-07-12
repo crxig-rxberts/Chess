@@ -15,6 +15,12 @@ public:
     static void revertMove(Board& board);
 
 private:
+    static int draggedPieceArrayIndex;
+    static sf::Vector2f originalPos;
+    static sf::Vector2f mouseOffset;
+    static sf::Vector2f originalScale;
+    static std::vector<sf::Vector2i> possibleMoves;
+
     static void findClickedPiece(Board& board, float x, float y);
     static void findLegalMoves(Board& board, int pieceIndex);
     static void releasePiece(Board& board, float x, float y);
