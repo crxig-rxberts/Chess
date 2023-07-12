@@ -194,9 +194,9 @@ I have chosen the below image as an example of encapsulation due to this also sl
 The below image is of my Board.cpp and Board.hpp, this is a class which contains a constructor in which all the Board attributes are self
 instantiated. I then have helper classes like BoardEvent which will handle any alterations to the attributes within this class. The way in which this class
 is flawed though can be seen if we look at Board.hpp on the right hand side of the image. Attributes like pieceLayout, pieces and currentPlayerTurn are public
-members, which in the case of encapsulation these should all be privatised. If I wanted our helper classes to make altercations to these attributes I should be
+members, which in the case of encapsulation these should all be privatised. If I wanted our helper classes to make alterations to these attributes I should be
 providing public getter and setter methods here so that, say for pieceLayout, for this to be altered, a helper class would retrieve pieceLayout via board.getPieceLayout()
-then perform actions on a copy of this and then set the copy using board.setPieceLayout(alteredCopy); With this refactor, that I will make in the future this class
+then perform actions on a copy of this and then set the copy using board.setPieceLayout(alteredCopy); With this refactor, that I will make in the future, this class
 will be truly following the encapsulation principle.
 
 ![Encapsulation_Example](src/assets/img/EncapsulationExample.png)
@@ -208,7 +208,7 @@ There are various examples of Abstraction within my code, the Menu and Board cla
 on a different area for this example. Within the BoardEvent.cpp class at line 48, see [here](https://github.com/crxig-rxberts/Chess/blob/e8740d353437257dc00ef127851811d1b92c857f/src/main/game/BoardEvent.cpp#L48),
 we have the method findLegalMoves() and within this we perform ```possibleMoves = PieceMovement::calculateMovesForPiece(piece, board);```. By creating a separate
 class PieceMovement, I am able to abstract away the algorithm that populates this possibleMoves vector, thus taking the concern away from the BoardEvent class
-that was not designed to handle such problems. BoardEvent can handle all the altercations to the Board object and then PieceMovement can handle the algorithms for
+that was not designed to handle such problems. BoardEvent can handle all the alterations to the Board object and then PieceMovement can handle the algorithms for
 the piece movement rules. Following this principle makes the program much easier to expand and maintain, whilst also keeping it clear what each classes purpose is. 
 This is a great example of abstraction, due to this one line of code being able to abstract away a 150~ line algorithm. 
 
@@ -226,10 +226,10 @@ So the code is using event-driven programming principles to achieve loose coupli
 ### 3c. Features and Innovative design
 
 The project is structured in such a way that maintainability and expansion would be easily done. For instance when I come to implement checking moves
-this will be done in the form of a new class CheckHelper or something similar, so that when It comes to implementing not allowing self checking moves, 
-after the class has been implemented, this will be a single line in BoardEvent to not allow a player to make checking moves. Similar to that I used in
-previous example ```possibleMoves = PieceMovement::calculateMovesForPiece(piece, board);```. We can add a simple condition something along the lines of 
-isMoveSelfChecking() and if this return true, we follow the revert move path, or the carry-out move path, the current implementation of which can be seen
+this will be done in the form of a new class CheckHelper or something similar, so that when It comes to implementing disallowing self checking moves, 
+after the class has been implemented, this will be a single line in BoardEvent to not allow a player to make checking moves. Similar to that I used in a
+previous example ```possibleMoves = PieceMovement::calculateMovesForPiece(piece, board);```. We can add a simple condition, something along the lines of 
+isMoveSelfChecking(), and if this return true we follow the revert move path, else we follow the handle legal move path, the current implementation of which can be seen
 [here](https://github.com/crxig-rxberts/Chess/blob/e8740d353437257dc00ef127851811d1b92c857f/src/main/game/BoardEvent.cpp#L59).
 
 Another great implementation is within the main game loop [here](https://github.com/crxig-rxberts/Chess/blob/e8740d353437257dc00ef127851811d1b92c857f/src/main/main.cpp#L29), 
