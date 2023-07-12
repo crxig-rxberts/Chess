@@ -192,7 +192,7 @@ efficiency.
 
 I have chosen the below image as an example of encapsulation due to this also slightly breaking the principle, thus giving me an opportunity to discuss how to improve this class.
 The below image is of my Board.cpp and Board.hpp, this is a class which contains a constructor in which all the Board attributes are self
-instantiated. I then have helper classes like BoardEvent which will handle any altercations to the attributes within this class. The way in which this class
+instantiated. I then have helper classes like BoardEvent which will handle any alterations to the attributes within this class. The way in which this class
 is flawed though can be seen if we look at Board.hpp on the right hand side of the image. Attributes like pieceLayout, pieces and currentPlayerTurn are public
 members, which in the case of encapsulation these should all be privatised. If I wanted our helper classes to make altercations to these attributes I should be
 providing public getter and setter methods here so that, say for pieceLayout, for this to be altered, a helper class would retrieve pieceLayout via board.getPieceLayout()
