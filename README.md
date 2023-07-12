@@ -79,7 +79,7 @@ like PieceMovement, BoardEvent, Piece, Board, Menu etc. I'll speak more on these
 Existing data structures have been used appropriately and I have created custom data types where necessary, for example the use of sf::Texture and sf::Sprite 
 for handling graphics, std::unordered_map to associate specific SFML event types with the corresponding function handlers, and a std::vector of sf::Texture 
 and Piece to store all textures and game pieces. It is good practice to choose the data type that best suits your needs, 
-considering factors such as the operations you need to perform, although there are gaps in my choices. For example pieces a represented in the
+considering factors such as the operations you need to perform, although there are gaps in my choices. For example pieces are represented in the
 layout using integers for their respective types and stored in std::vector<std::vector<-int>> pieceLayout. This would have been better suited as
 std::vector<std::vector<-PieceName>> pieceLayout where PieceName is an enumerated type, similar to that of Menu::Option, which is used as a flag 
 for the user's choice within the menu. This would have enhanced readability throughout my code as this pieceIndex value is used in a large number of cases. 
@@ -93,20 +93,20 @@ saving state, or informing the user about what happened.
 
 ### 2a. Adoption of best practices
 
-  I mentioned in previous sections some the refactors I'd done to adhere to best practices, this could include a refactor I did of the PieceMovement
+  I mentioned in previous sections some of the refactors I'd done to adhere to best practices, this could include a refactor I did of the PieceMovement
 class. Originally this class had individual methods for each pieceType and consisted of 270 lines of code, after realising that 3 piece types move in
 a similar fashion I was able to refactor this to make use of repeated code, thus making the file some 150 lines and much easier to read. 
 
 I also refactored the main game loop, and now we have all event types stored within unordered maps, the motivation for making this change was that 
 there could potentially be more events to add to this game, meaning that the main game loop had potential to grow beyond a desirable size. By 
-storing the events within an unordered map towards the top of the file we can add new events and method calls to the maps, within ever needing 
+storing the events within an unordered map towards the top of the file we can add new events and method calls to the maps, without ever needing 
 to change the main game loop, enhancing both maintainability and readability.
 
 ### 2b. Reviewing Code Changes
 
   After each change I would often go back over the code and review certain things. A good practice I have learnt from colleagues is to ask the
 following questions; Can complexity be broken down? Are variables required or can be inlined? Is the code readable for other developers? And, 
-is each line of code required or can be simplified? I'd base a lot of refactors on this, and in cases of large scale refactoring I created a Jira 
+is each line of code required or can it be simplified? I'd base a lot of refactors on this, and in cases of large scale refactoring I created a Jira 
 ticket to do this. CHS-10 and CHS-11 are two examples of tickets I created off the back of code reviews. 
 
 ### 2c. A code refactor example
