@@ -133,7 +133,7 @@ This proved useful during an ongoing task's implementation of a check helper, wh
 ### 3a. i. Code refactoring analysis
 
 Here I would like to discuss two refactors that I have previously mentioned in more depth, firstly BoardEvent.cpp which can be seen again
-[here](https://github.com/crxig-rxberts/Chess/blob/main/src/BoardEvent.cpp). I'm particularly happy with the modularity of this file, original code
+[here](https://github.com/crxig-rxberts/Chess/blob/c245ac47d1c1974f45c6c92c2fa8847fe9881337/src/main/game/BoardEvent.cpp). I'm particularly happy with the modularity of this file, the original code
 which can be seen [here](https://github.com/crxig-rxberts/Chess/blob/b9118a0b2a8216f9f4423f2c801c87bbb2e23a61/src/Board.cpp) had a great deal of complexity
 with methods that were not easily maintained. My refactor of this file mainly focussed on making methods very specific carrying out a single task, for example
 in the refactored file on line 56 we see a method releasePiece, which was a large complex method, now made far more readable by the breakdown of individual tasks;
@@ -158,7 +158,7 @@ data loss. I have remedied this code smell in various places, but we still see i
 ``` auto col = static_cast<int>((x + mouseOffset.x) / board.tileSize);```. Here I have cast the float to an int before performing the operation thus removing
 the conversion smell. 
 
-Sonar lint also helped me refactor another code smell. I have a method is possible move, which you can see the before and after of the refactored method.
+Sonar lint also helped me refactor another code smell. I have a method is possible move, which you can see the before and after of the refactored method below.
 There are a couple of reasons why this would be marked as a code smell, firstly Using STL algorithms like std::any_of helps to express the intention of the code 
 more clearly than using raw loops. When a future developer reads std::any_of, they know immediately that the code is checking if any element in the range satisfies 
 the condition. This makes the code easier to understand and maintain. But also std::any_of stops iterating as soon as it finds an element that satisfies the predicate, 
