@@ -137,8 +137,8 @@ Here I would like to discuss two refactors that I have previously mentioned in m
 which can be seen [here](https://github.com/crxig-rxberts/Chess/blob/b9118a0b2a8216f9f4423f2c801c87bbb2e23a61/src/Board.cpp) had a great deal of complexity
 with methods that were not easily maintained. My refactor of this file mainly focussed on making methods very specific carrying out a single task, for example
 in the refactored file on line 56 we see a method releasePiece, which was a large complex method, now made far more readable by the breakdown of individual tasks;
-isPossibleMove(), handleLegalMove(), revertMove() and resetDragState(). If I were to do work on this method in the future, for example when I implement checking logic 
-it will be fair easier to insert this logic where necessary and alter individual methods here where necessary. 
+isPossibleMove(), handleLegalMove(), revertMove() and resetDragState(). Whenever I do work on this method in the future, for example when I implement checking logic, 
+it will be far easier to insert this logic where necessary and alter individual methods where necessary without breaking the rest of the code. 
 
 Another refactor I'd like to speak about is PieceMovement, this focussed on amending bad practice around the DRY principle. The file contained unnecessary weight in 
 the form of repeated code. This was due to the fact that the calculations performed for a bishop, a rook, and a queen could all be done in the same method
