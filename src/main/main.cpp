@@ -15,15 +15,15 @@ int main() {
     Board board(window.getSize().x);
 
     std::unordered_map<sf::Event::EventType, std::function<void(sf::Event&)>> menuEventHandlers {
-            { sf::Event::Closed, [&window](sf::Event& event) {window.close(); } },
-            { sf::Event::MouseButtonPressed, [&menu, &window](sf::Event& event) { menu.handleEvent(event, window); } },
+            { sf::Event::Closed, [&window](sf::Event const& event) {window.close(); } },
+            { sf::Event::MouseButtonPressed, [&menu, &window](sf::Event const& event) { menu.handleEvent(event, window); } },
     };
 
     std::unordered_map<sf::Event::EventType, std::function<void(sf::Event&)>> boardEventHandlers {
-            { sf::Event::Closed, [&window](sf::Event& event) {window.close(); } },
-            { sf::Event::MouseMoved, [&board](sf::Event& event) { BoardEvent::handleMouseMoveEvent(board, event.mouseMove); } },
-            { sf::Event::MouseButtonPressed, [&board](sf::Event& event) { BoardEvent::handleMouseButtonEvent(board, event.mouseButton, true); } },
-            { sf::Event::MouseButtonReleased, [&board](sf::Event& event) { BoardEvent::handleMouseButtonEvent(board, event.mouseButton, false); } },
+            { sf::Event::Closed, [&window](sf::Event const& event) {window.close(); } },
+            { sf::Event::MouseMoved, [&board](sf::Event const& event) { BoardEvent::handleMouseMoveEvent(board, event.mouseMove); } },
+            { sf::Event::MouseButtonPressed, [&board](sf::Event const& event) { BoardEvent::handleMouseButtonEvent(board, event.mouseButton, true); } },
+            { sf::Event::MouseButtonReleased, [&board](sf::Event const& event) { BoardEvent::handleMouseButtonEvent(board, event.mouseButton, false); } },
     };
 
     while (window.isOpen()) {

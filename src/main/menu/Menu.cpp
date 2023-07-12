@@ -40,7 +40,7 @@ void Menu::draw(sf::RenderWindow& window) const {
     window.draw(pvcButton);
 }
 
-void Menu::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
+void Menu::handleEvent(const sf::Event& event, const sf::RenderWindow& window) {
     if(event.type == sf::Event::MouseButtonPressed) {
         sf::Vector2i position = sf::Mouse::getPosition(window);
         if (pvpButton.getGlobalBounds().contains(position.x, position.y)) {

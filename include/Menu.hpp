@@ -11,7 +11,7 @@ public:
     };
 
     void draw(sf::RenderWindow& window) const;
-    void handleEvent(const sf::Event& event, sf::RenderWindow& window);
+    void handleEvent(const sf::Event& event, const sf::RenderWindow& window);
     Option getSelectedOption() const;
 
 private:

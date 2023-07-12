@@ -67,12 +67,8 @@ void BoardEvent::releasePiece(Board& board, float x, float y) {
 
 bool BoardEvent::isPossibleMove(int col, int row) {
     sf::Vector2i newTile(col, row);
-    for (const auto &move: possibleMoves) {
-        if (move == newTile) {
-            return true;
-        }
-    }
-    return false;
+    return std::any_of(possibleMoves.begin(), possibleMoves.end(),
+                       [newTile](const auto& move){ return move == newTile; });
 }
 
 void BoardEvent::handleLegalMove(Board& board, int col, int row) {
