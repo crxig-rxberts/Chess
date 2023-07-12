@@ -64,7 +64,7 @@ I will speak on some of these refactors later.
   Using Jira software I broke the tasks down into sizable chunks, not necessarily in the form of epics but in the form of single tasks, trying not to make them too large. 
 For example, "CHS-6 Create method to find possible moves for each piece type" was probably one of the larger changes taking me around 3 - 4 days 
 to complete this, a fair amount of time for a single task. As you can see in the img below there are tickets in place for the remaining tasks, 
-currently with a status of "TO DO." The tickets with a status of "DONE" where what I considered to be enough to create an MVP fulfilling the module brief.
+currently with a status of "TO DO." The tickets with a status of "DONE" are what I considered to be enough to create an MVP fulfilling the module brief.
 
 ![Chess Project JIRA](src/assets/img/JiraIssues.png)
 ***NOTE:*** *If you would like a closer look at this img please find it at "src/assets/img/JiraIssues.png"*
