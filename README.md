@@ -261,7 +261,7 @@ and the latest refactored file can be seen [here](https://github.com/crxig-rxber
 between the initial and refactored file is that the findPossibleMoveForBishop/Queen/Rook methods have been replaced by calculateDirectionalPieceMoves() (name changes throughout also better reflects the tasks), 
 I explained the reason for this change [earlier in this README](https://github.com/crxig-rxberts/Chess#:~:text=Another%20refactor%20I%27d,bishop%20and%20queen.). The inspiration for this code change came from 
 research I had done on other chess projects, after attempting implementation on my own for the whole project I started searching the internet for as much inspiration as I could to better my code and this was 
-something I came across. Not only have I replaced 3 methods for one, but you can also from [line 144](https://github.com/crxig-rxberts/Chess/blob/d66054c761d02de381dba955494ec0e904fb86b8/src/main/game/PieceMovement.cpp#L144)
+something I came across. Not only have I replaced 3 methods for one, but you can also see from [line 144](https://github.com/crxig-rxberts/Chess/blob/d66054c761d02de381dba955494ec0e904fb86b8/src/main/game/PieceMovement.cpp#L144)
 onwards we have repeated code stored within methods, not only does this better follow DRY practices, but it also makes these mathematical operations far easier to read. For instance
 seeing ```isWithinBoard(col, row)``` as opposed too ```col >= 0 && col < boardSize && row >= 0 && row < boardSize``` is infinitely better for other developers to read and understand.
 On this point we can see room for improvement elsewhere in the file, like for example [calculatePawnMoves()](https://github.com/crxig-rxberts/Chess/blob/d66054c761d02de381dba955494ec0e904fb86b8/src/main/game/PieceMovement.cpp#L36)
@@ -271,18 +271,18 @@ This would make the comments in the code redundant, something which I have learn
 ### 3e. i. Reflective review; Improvements
 
 The Boards current game state is reflected in this [pieceLayout](https://github.com/crxig-rxberts/Chess/blob/d66054c761d02de381dba955494ec0e904fb86b8/src/main/game/Board.cpp#L33) vector, 
-but we actually store a pieces position and pieces type within itself (piece object). Due to the fact we have all piece positions, the board size and thus the tile size, we do not need 
+but we actually store a pieces position and a pieces type within itself (the piece object). Due to the fact we have all piece positions, the board size and the tile size, we do not need 
 this pieceLayout object to reflect the board. The algorithms for this would be vastly different to my implementations and my code is heavily dependent on this pieceLayout vector, 
 so I have not yet made this improvement. 
 
 As seen in the [pieceLayout](https://github.com/crxig-rxberts/Chess/blob/d66054c761d02de381dba955494ec0e904fb86b8/src/main/game/Board.cpp#L33) vector pieces are reflected by 
 a pieceIndex, this pieceIndex is used throughout my code for all different reasons, but this could have been implemented as an enumerated type with the piece names, this refactor
-wouldn't change functionality of my code, but would greatly enhance the readability of my code. 
+wouldn't change functionality of my code, but would greatly enhance the readability of the code. 
 
 As seen [here](https://github.com/crxig-rxberts/Chess/blob/d66054c761d02de381dba955494ec0e904fb86b8/include/Piece.hpp) in my Piece.hpp file, this is the piece representation.
 I instantiate a piece for every piece on the board and this is assigned a pieceIndex reflecting its type. This would have been a great time for me to make use of the
 Inheritance principle. If I created a class for each piece type that extended from Piece then I could instantiate each individual piece at start and also add extra attributes 
-to an individual piece like its movements, this would allow me to remove [this code](https://github.com/crxig-rxberts/Chess/blob/d66054c761d02de381dba955494ec0e904fb86b8/src/main/game/PieceMovement.cpp#L5C1-L11C2) from PieceMovement.
+to an individual piece like its movements, this would allow me to remove [this code](https://github.com/crxig-rxberts/Chess/blob/d66054c761d02de381dba955494ec0e904fb86b8/src/main/game/PieceMovement.cpp#L5C1-L11C2) from PieceMovement and store it as a self contained element for each inheritor of Piece.
 
 ### 3e. ii. Reflective review; Future iterations
 
