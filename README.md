@@ -11,10 +11,37 @@ This initial release for submission will be a "dumbed down" version of chess bei
 PvP version being implemented. The rest of the chess rules will be implemented on a later release as well as PvC, 
 but we will speak on how these will be achieved later in this document. 
 
-### 1b. UML Diagram of the current project state
+### 1b. UML Diagram of the current project state and Project Structure
 
+#### UML Diagram:
 ![Chess Project UML Diagram](src/assets/img/ChessProjectUML.png)
 ***NOTE:*** *If you would like a closer look at this img please find it at "src/assets/img/ChessProjectUML.png"*
+
+#### Project Structure:
+
+- 📂 Project Root
+    - 📄 CMakeLists.txt
+    - 📄 README.txt
+    - 📄 .gitignore
+    - 📂 include
+        - 📄 Board.hpp
+        - 📄 BoardEvent.hpp
+        - 📄 Menu.hpp
+        - 📄 Piece.hpp
+        - 📄 PieceMovement.hpp
+    - 📂 src
+        - 📂 assets
+            - 📂 img
+                - 🖼️ (all image files stored here as .png)
+        - 📂 main
+            - 📂 menu
+                - 📄 Menu.cpp
+            - 📂 game
+                - 📄 Board.cpp
+                - 📄 BoardEvent.cpp
+                - 📄 Piece.cpp
+                - 📄 PieceMovement.cpp
+            - 📄 main.cpp
 
 ### 1c. Initial Plan and design approach
 
@@ -86,7 +113,7 @@ ticket to do this. CHS-10 and CHS-11 are two examples of tickets I created off t
 
 After changes CHS-8 and prior changes, my Board.cpp was looking very clustered and had many examples of bad coding practice throughout. 
 See the original [here](https://github.com/crxig-rxberts/Chess/blob/b9118a0b2a8216f9f4423f2c801c87bbb2e23a61/src/Board.cpp). Not only did I encapsulate 
-all the code into its own helper class, BoardEvent.cpp, I also refactored the code to be much more readable and modular, something that i will 
+all the code into its own helper class, BoardEvent.cpp, I also refactored the code to be much more readable and modular, something that I will 
 into more detail on in section 3, but the latest BoardEvent.cpp can be seen [here](https://github.com/crxig-rxberts/Chess/blob/main/src/BoardEvent.cpp).
 
 ### 2d. Assuring quality
@@ -94,7 +121,7 @@ into more detail on in section 3, but the latest BoardEvent.cpp can be seen [her
 To ensure that my methods were working correctly I would use two methods, one would be debugging statements and another would be through CLion's 
 debugging tool. Firstly, take for example the PieceMovement class, these methods would perform calculations on a nested vector of type integer (pieceLayout),
 so I had function to hand which would print the pieceLayout vector in a form that resembled the chess board, this would allow me to do manual testing
-on my methods as i developed them, seeing as I had no automated tests in place. 
+on my methods as I developed them, seeing as I had no automated tests in place. 
 
 CLion's debugging tool is especially helpful and something I use through IntelliJ frequently. This allows you to put breaks in the code execution and run in debug mode, 
 this way you can perform evaluations on the code as it is running, say I wanted to see if a certain value is being calculated correctly you can put a code break 
@@ -103,7 +130,7 @@ This proved useful during an ongoing task's implementation of a check helper, wh
 
 ## Section 3, Analysis.
 
-### 3a. Code refactoring analysis
+### 3a. i. Code refactoring analysis
 
 Here I would like to discuss two refactors that I have previously mentioned in more depth, firstly BoardEvent.cpp which can be seen again
 [here](https://github.com/crxig-rxberts/Chess/blob/main/src/BoardEvent.cpp). I'm particularly happy with the modularity of this file, original code
@@ -119,6 +146,116 @@ by just giving the method the relevant directional movements that a piece could 
 [here](https://github.com/crxig-rxberts/Chess/blob/b9118a0b2a8216f9f4423f2c801c87bbb2e23a61/src/Board.cpp), notice on line 97 calculateDirectionalPieceMoves has replaced 
 three methods specific to rook, bishop and queen. 
 
+### 3a. ii. Code Smells
+
+Along the way of creating this project I have encountered various code smells, one glaring one would be the Board class and mixing public and private
+members, generally considered bad coding practice. But there a few code smells throughout my project that I will discuss. To help me highlight code smells
+I have used a tool called SonarLint, which is popular within the industry for improving the quality of your code. 
+
+With a program like my chess game, there is a lot of potential for narrowing and implicit conversions, narrowing conversion is when we take a larger value, like a float
+and convert it to type integer and vice versa for implicit conversions. This is generally bad practice and although not the case in my program can cause
+data loss. I have remedied this code smell in various places, but we still see it in parts of the code, one example is that of the line 
+``` auto col = static_cast<int>((x + mouseOffset.x) / board.tileSize);```. Here I have cast the float to an int before performing the operation thus removing
+the conversion smell. 
+
+Sonar lint also helped me refactor another code smell. I have a method is possible move, which you can see the before and after of the refactored method.
+There are a couple of reasons why this would be marked as a code smell, firstly Using STL algorithms like std::any_of helps to express the intention of the code 
+more clearly than using raw loops. When a future developer reads std::any_of, they know immediately that the code is checking if any element in the range satisfies 
+the condition. This makes the code easier to understand and maintain. But also std::any_of stops iterating as soon as it finds an element that satisfies the predicate, 
+whereas the loop will continue to iterate over the rest of the elements even after it has found a match. Thus making the refactored method use less compute power, increasing
+efficiency.
+
+**Before:**
+```
+  bool BoardEvent::isPossibleMove(int col, int row) {
+    sf::Vector2i newTile(col, row);
+    for (const auto &move: possibleMoves) {
+        if (move == newTile) {
+            return true;
+        }
+    }
+    return false;
+} 
+```
+**After:**
+```
+  bool BoardEvent::isPossibleMove(int col, int row) {
+    sf::Vector2i newTile(col, row);
+    return std::any_of(possibleMoves.begin(), possibleMoves.end(), 
+                            [newTile](const auto& move){ return move == newTile; });
+}
+```
+
+### 3b. OOP Principles
+
+#### Encapsulation
+
+I have chosen the below image as an example of encapsulation due to this also slightly breaking the principle, thus giving me an opportunity to discuss how to improve this class.
+The below image is of my Board.cpp and Board.hpp, this is a class which contains a constructor in which all the Board attributes are self
+instantiated. I then have helper classes like BoardEvent which will handle any altercations to the attributes within this class. The way in which this class
+is flawed though can be seen if we look at Board.hpp on the right hand side of the image. Attributes like pieceLayout, pieces and currentPlayerTurn are public
+members, which in the case of encapsulation these should all be privatised. If I wanted our helper classes to make altercations to these attributes I should be
+providing public getter and setter methods here so that, say for pieceLayout, for this to be altered, a helper class would retrieve pieceLayout via board.getPieceLayout()
+then perform actions on a copy of this and then set the copy using board.setPieceLayout(alteredCopy); With this refactor, that I will make in the future this class
+will be truly following the encapsulation principle.
+
+![Encapsulation_Example](src/assets/img/EncapsulationExample.png)
+
+
+#### Abstraction
+
+There are various examples of Abstraction within my code, the Menu and Board classes abstract their self instantiation within their constructor, but I'll speak
+on a different area for this example. Within the BoardEvent.cpp class at line 48, see [here](https://github.com/crxig-rxberts/Chess/blob/e8740d353437257dc00ef127851811d1b92c857f/src/main/game/BoardEvent.cpp#L48),
+we have the method findLegalMoves() and within this we perform ```possibleMoves = PieceMovement::calculateMovesForPiece(piece, board);```. By creating a separate
+class PieceMovement, I am able to abstract away the algorithm that populates this possibleMoves vector, thus taking the concern away from the BoardEvent class
+that was not designed to handle such problems. BoardEvent can handle all the altercations to the Board object and then PieceMovement can handle the algorithms for
+the piece movement rules. Following this principle makes the program much easier to expand and maintain, whilst also keeping it clear what each classes purpose is. 
+This is a great example of abstraction, due to this one line of code being able to abstract away a 150~ line algorithm. 
+
+
+#### Loose Coupling 
+
+While not strictly an OOP principle, loose coupling is a design goal often achieved through good OOP design. In my project, Board, Menu, and the main loop have been designed 
+to operate independently as much as possible. The event handling mechanism allows for this separation of concerns. The main loop doesn't care whether it's the Board or Menu 
+that handles the event, it just throws the event into the appropriate handler and moves on. The Menu and Board classes also don't need to know about each other; they only 
+care about the events they're responsible for.
+
+So the code is using event-driven programming principles to achieve loose coupling, where each class can be modified and tested independently as much as possible.
+
+
+### 3c. Features and Innovative design
+
+The project is structured in such a way that maintainability and expansion would be easily done. For instance when I come to implement checking moves
+this will be done in the form of a new class CheckHelper or something similar, so that when It comes to implementing not allowing self checking moves, 
+after the class has been implemented, this will be a single line in BoardEvent to not allow a player to make checking moves. Similar to that I used in
+previous example ```possibleMoves = PieceMovement::calculateMovesForPiece(piece, board);```. We can add a simple condition something along the lines of 
+isMoveSelfChecking() and if this return true, we follow the revert move path, or the carry-out move path, the current implementation of which can be seen
+[here](https://github.com/crxig-rxberts/Chess/blob/e8740d353437257dc00ef127851811d1b92c857f/src/main/game/BoardEvent.cpp#L59).
+
+Another great implementation is within the main game loop [here](https://github.com/crxig-rxberts/Chess/blob/e8740d353437257dc00ef127851811d1b92c857f/src/main/main.cpp#L29), 
+this logic takes the handle of events out of the main game loop and into the unordered maps at the top of the file, this allows for a cleaner game loop
+and the ability to manage and add new events with relative ease when it comes to changes within main.cpp. There are however a couple of flaws with this 
+file that I will mention in the reflective review section. 
+
+I also think the project file structure as a whole is well done, the structure can be seen in section 1b. The project is split in a typical way seen in c++
+projects, with all the headers stored in an include directory and then having well split file structure for the main game files, this will be further improved
+as I expand the project, for example I will be adding more helper classes, so I will undoubtedly split the model and controller sections like so: 
+- 📂 main
+  - 📂 menu
+    - 📄 Menu.cpp
+  - 📂 game
+    - 📂 controllers    
+      - 📄 BoardEvent.cpp
+      - 📄 PieceMovement.cpp
+    - 📂 model
+      - 📄 Board.cpp
+      - 📄 Piece.cpp
+
+Having a clean file structure is important for maintainability of the code and for other developers to navigate easily through the project. 
+
+
+
+
 3. Evaluation (academic standard: distinction level detail: section required for distinction) – 10%
    a. Analysis with embedded examples of key code refactoring, reuse, smells.
    b. Implementation and effective use of ‘advanced’ programming principles(with examples).
@@ -130,29 +267,7 @@ three methods specific to rook, bishop and queen.
 
 DETAILED LOOK AT THE PROJECT
 
-- 📂 Project Root
-    - 📄 CMakeLists.txt
-    - 📄 README.txt
-    - 📂 cmake-build-debug
-    - 📂 include
-        - 📄 Board.hpp
-        - 📄 BoardEvent.hpp
-        - 📄 Menu.hpp
-        - 📄 Piece.hpp
-        - 📄 PieceMovement.hpp
-    - 📂 src
-        - 📂 assets
-            - 📂 img
-                - 🖼️ (all image files stored here as .png)
-        - 📂 main
-            - 📂 menu
-                - 📄 Menu.cpp
-            - 📂 game
-                - 📄 Board.cpp
-                - 📄 BoardEvent.cpp
-                - 📄 Piece.cpp
-                - 📄 PieceMovement.cpp
-            - 📄 main.cpp
+
 
 each individual file 
 
