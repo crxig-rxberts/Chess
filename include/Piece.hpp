@@ -12,7 +12,6 @@ public:
     const sf::Vector2f &getScale() const;
     void setScale(const sf::Vector2f &scale);
     int getPieceIndex() const;
-
     bool isPawn() const { return abs(pieceIndex) == 1; }
     bool isKnight() const { return abs(pieceIndex) == 2; }
     bool isBishop() const { return abs(pieceIndex) == 3; }
