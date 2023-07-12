@@ -114,7 +114,7 @@ ticket to do this. CHS-10 and CHS-11 are two examples of tickets I created off t
 After changes CHS-8 and prior changes, my Board.cpp was looking very clustered and had many examples of bad coding practice throughout. 
 See the original [here](https://github.com/crxig-rxberts/Chess/blob/b9118a0b2a8216f9f4423f2c801c87bbb2e23a61/src/Board.cpp). Not only did I extract 
 all the code into its own helper class, BoardEvent.cpp, I also refactored the code to be much more readable and modular, something that I will explain
-in more detail in section 3, but the latest BoardEvent.cpp can be seen [here](https://github.com/crxig-rxberts/Chess/blob/main/src/BoardEvent.cpp).
+in more detail in section 3, but the latest BoardEvent.cpp can be seen [here](https://github.com/crxig-rxberts/Chess/blob/c245ac47d1c1974f45c6c92c2fa8847fe9881337/src/main/game/BoardEvent.cpp).
 
 ### 2d. Assuring quality
 
