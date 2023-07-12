@@ -73,8 +73,8 @@ currently with a status of "TO DO." The tickets with a status of "DONE" are what
 
   The object-oriented design of this program utilises the principle of single-responsibility. The tasks are broken down into 
 manageable portions that carry out a single task, and this is also reflected in my Jira tickets, only working on a singular task at a time.
-This gives my program great modularity, referred to as Encapsulation. Classes have a single job, and that job can be inferred by the Class name,
-like PieceMovement, BoardEvent, Piece, Board, Menu etc. 
+This gives my program great modularity, this reflects consideration on Abstraction and Encapsulation. Classes have a single job, and that job can be inferred by the Class name,
+like PieceMovement, BoardEvent, Piece, Board, Menu etc. I'll speak more on these principles later.
 
 Existing data structures have been used appropriately and I have created custom data types where necessary, for example the use of sf::Texture and sf::Sprite 
 for handling graphics, std::unordered_map to associate specific SFML event types with the corresponding function handlers, and a std::vector of sf::Texture 
