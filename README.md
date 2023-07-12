@@ -80,8 +80,8 @@ Existing data structures have been used appropriately and I have created custom 
 for handling graphics, std::unordered_map to associate specific SFML event types with the corresponding function handlers, and a std::vector of sf::Texture 
 and Piece to store all textures and game pieces. It is good practice to choose the data type that best suits your needs, 
 considering factors such as the operations you need to perform, although there are gaps in my choices. For example pieces a represented in the
-layout using integers for their respective types and stored in std::vector<std::vector<int>> pieceLayout. This would have been better suited as
-std::vector<std::vector<PieceName>> pieceLayout where PieceName is an enumerated type, similar to that of Menu::Option, which is used to as a flag 
+layout using integers for their respective types and stored in std::vector<std::vector<-int>> pieceLayout. This would have been better suited as
+std::vector<std::vector<-PieceName>> pieceLayout where PieceName is an enumerated type, similar to that of Menu::Option, which is used as a flag 
 for the user's choice within the menu. This would have enhanced readability throughout my code as this pieceIndex value is used in a large number of cases. 
 
 On error handling, I have correctly checked if all texture files are loaded successfully. It's a good practice to do error handling especially for I/O operations which 
@@ -141,9 +141,9 @@ isPossibleMove(), handleLegalMove(), revertMove() and resetDragState(). If I wer
 it will be fair easier to insert this logic where necessary and alter individual methods here where necessary. 
 
 Another refactor I'd like to speak about is PieceMovement, this focussed on amending bad practice around the DRY principle. The file contained unnecessary weight in 
-the form of repeated code. This was due to the fact that the calculations performed for a bishop, a rook, and a queen could all be done in the same 
-by just giving the method the relevant directional movements that a piece could make. The original code can be seen here and the refactored code can be seen
-[here](https://github.com/crxig-rxberts/Chess/blob/b9118a0b2a8216f9f4423f2c801c87bbb2e23a61/src/Board.cpp), notice on line 97 calculateDirectionalPieceMoves has replaced 
+the form of repeated code. This was due to the fact that the calculations performed for a bishop, a rook, and a queen could all be done in the same method
+by just giving the method the relevant directional movements that a piece could make. The original code can be seen [here](https://github.com/crxig-rxberts/Chess/blob/b9118a0b2a8216f9f4423f2c801c87bbb2e23a61/src/PieceMovement.cpp) and the refactored code can be seen
+[here](https://github.com/crxig-rxberts/Chess/blob/d66054c761d02de381dba955494ec0e904fb86b8/src/main/game/PieceMovement.cpp), notice on line 97 calculateDirectionalPieceMoves has replaced 
 three methods specific to rook, bishop and queen. 
 
 ### 3a. ii. Code Smells
@@ -237,9 +237,10 @@ this logic takes the handle of events out of the main game loop and into the uno
 and the ability to manage and add new events with relative ease when it comes to changes within main.cpp. There are however a couple of flaws with this 
 file that I will mention in the reflective review section. 
 
-I also think the project file structure as a whole is well done, the structure can be seen in section 1b. The project is split in a typical way seen in c++
-projects, with all the headers stored in an include directory and then having well split file structure for the main game files, this will be further improved
-as I expand the project, for example I will be adding more helper classes, so I will undoubtedly split the model and controller sections like so: 
+I also think the project file structure as a whole is well done, the structure can be seen in section [1b](https://github.com/crxig-rxberts/Chess#project-structure). 
+The project is split in a typical way seen in c++ projects, with all the headers stored in an include directory and then having well organised file structure for the 
+main game files. This will be further improved as I expand the project, for example I will be adding more helper classes, so I will undoubtedly split the model 
+and controller sections like so: 
 - 📂 main
   - 📂 menu
     - 📄 Menu.cpp
@@ -253,32 +254,42 @@ as I expand the project, for example I will be adding more helper classes, so I 
 
 Having a clean file structure is important for maintainability of the code and for other developers to navigate easily through the project. 
 
+### 3d. Improved Algorithms 
 
+For this section I want to use my PieceMovement class as an example of improvements through iteration. My initial PieceMovement implementation can be seen [here](https://github.com/crxig-rxberts/Chess/blob/b9118a0b2a8216f9f4423f2c801c87bbb2e23a61/src/PieceMovement.cpp)
+and the latest refactored file can be seen [here](https://github.com/crxig-rxberts/Chess/blob/d66054c761d02de381dba955494ec0e904fb86b8/src/main/game/PieceMovement.cpp). The biggest difference
+between the initial and refactored file is that the findPossibleMoveForBishop/Queen/Rook methods have been replaced by calculateDirectionalPieceMoves() (name changes throughout also better reflects the tasks), 
+I explained the reason for this change [earlier in this README](https://github.com/crxig-rxberts/Chess#:~:text=Another%20refactor%20I%27d,bishop%20and%20queen.). The inspiration for this code change came from 
+research I had done on other chess projects, after attempting implementation on my own for the whole project I started searching the internet for as much inspiration as I could to better my code and this was 
+something I came across. Not only have I replaced 3 methods for one, but you can also from [line 144](https://github.com/crxig-rxberts/Chess/blob/d66054c761d02de381dba955494ec0e904fb86b8/src/main/game/PieceMovement.cpp#L144)
+onwards we have repeated code stored within methods, not only does this better follow DRY practices, but it also makes these mathematical operations far easier to read. For instance
+seeing ```isWithinBoard(col, row)``` as opposed too ```col >= 0 && col < boardSize && row >= 0 && row < boardSize``` is infinitely better for other developers to read and understand.
+On this point we can see room for improvement elsewhere in the file, like for example [calculatePawnMoves()](https://github.com/crxig-rxberts/Chess/blob/d66054c761d02de381dba955494ec0e904fb86b8/src/main/game/PieceMovement.cpp#L36)
+can have blocks abstracted out into smaller methods, for example I could have calculatePawnMoveOneSquareForward() for the lines 42 - 47 for this method and so on for the other two sections. 
+This would make the comments in the code redundant, something which I have learnt throughout my time coding is that well written code will be self documenting.
 
+### 3e. i. Reflective review; Improvements
 
-3. Evaluation (academic standard: distinction level detail: section required for distinction) – 10%
-   a. Analysis with embedded examples of key code refactoring, reuse, smells.
-   b. Implementation and effective use of ‘advanced’ programming principles(with examples).
-   c. Features showcase and embedded innovations(with examples) - opportunity to ‘highlight’ best bits.
-   d. Improved algorithms – research, design, implementation, and tested confirmation (with examples).
-   e. Reflective review, opportunities to improve and continued professional development.
+The Boards current game state is reflected in this [pieceLayout](https://github.com/crxig-rxberts/Chess/blob/d66054c761d02de381dba955494ec0e904fb86b8/src/main/game/Board.cpp#L33) vector, but we actually store a pieces position and pieces type
+within itself (piece object). Due to the fact we have all piece positions, the board size and thus the tile size, we do not need this pieceLayout object to reflect the board. The algorithms
+for this would be vastly different to my implementations and my code is heavily dependent on this pieceLayout vector, so I have not yet made this improvement. 
 
+As seen in the [pieceLayout](https://github.com/crxig-rxberts/Chess/blob/d66054c761d02de381dba955494ec0e904fb86b8/src/main/game/Board.cpp#L33) vector pieces are reflected by 
+a pieceIndex, this pieceIndex is used throughout my code for all different reasons, but this could have been implemented as an enumerated type with the piece names, this refactor
+wouldn't change functionality of my code, but would greatly enhance the readability of my code. 
 
+As seen [here](https://github.com/crxig-rxberts/Chess/blob/d66054c761d02de381dba955494ec0e904fb86b8/include/Piece.hpp) in my Piece.hpp file, this is the piece representation.
+I instantiate a piece for every piece on the board and this is assigned a pieceIndex reflecting its type. This would have been a great time for me to make use of the
+Inheritance principle. If I created a class for each piece type that extended from Piece then I could instantiate each individual piece at start and also add extra attributes 
+to an individual piece like its movements, this would allow me to remove [this code](https://github.com/crxig-rxberts/Chess/blob/d66054c761d02de381dba955494ec0e904fb86b8/src/main/game/PieceMovement.cpp#L5C1-L11C2) from PieceMovement.
 
-DETAILED LOOK AT THE PROJECT
+### 3e. ii. Reflective review; Future iterations
 
+There are still a few things to implement within this project before it is a fully completed chess game, for instance I have CHS-14 and CHS-15 to add some more chess rules
+for en passant and castling, respectively. I also have CHS-16,17,18,19 to implement the checking features, which will create methods to derive check, and also not allow self checking
+moves and end the game on checkmate. I consider these to be two iteration CHS-14 and 15 as one and then CHS-16,17,18 and 19 as one iteration. After this I will consider the PvP
+element of the game to be complete. 
 
-
-each individual file 
-
-
-
-CRITICISM 
-
-code smells 
-
-bad practices 
-
-revisions 
-
-
+After the completion of the PvP element I will do some research into implementing a PvC element. At this point I'll break this down into smaller more manageable task to get this done,
+but I intend on using a third party chess engine within my game to calculate the moves, using a third party chess engine will not only take away a great deal of coding within the project
+but also will give me the ability to add a difficulty option and the player will be able to decide upon an elo to contend with.
